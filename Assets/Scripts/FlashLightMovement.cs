@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class FlashLightMovement : MonoBehaviour
 {
-    public Transform target; // Objeto 3D que el spotlight seguirá
-    public Vector3 offset; // Posición relativa del spotlight al objetivo
+    public Transform target; // Objeto 3D que el spotlight seguirï¿½
+    public Vector3 offset; // Posiciï¿½n relativa del spotlight al objetivo
 
-    private Light spotlight; 
-    public float defaultIntensity = 30.0f; 
-    public float modifiedIntensity = 0.0f;
+    private Light spotlight; // Componente de luz del spotlight
+    public float defaultIntensity = 30.0f; // Intensidad por defecto del spotlight (osea linterna prendida)
+    public float modifiedIntensity = 0.0f; // Intensidad modificada del spotlight (osea linterna apagada)
 
     private void Start()
     {
-        spotlight = GetComponent<Light>();
-        spotlight.intensity = defaultIntensity;
+        spotlight = GetComponent<Light>(); //agarramos el componente de luz del spotlight
+        spotlight.intensity = defaultIntensity; //inicializamos la intensidad del spotlight, osea prendida
     }
 
     private void LateUpdate()
@@ -22,17 +22,17 @@ public class FlashLightMovement : MonoBehaviour
         if (!target)
             return;
 
-        // Calculamos la posición deseada del spotlight relativa al personaje
+        // Calculamos la posiciï¿½n deseada del spotlight relativa al personaje --> seguir el personaje
         Vector3 desiredPosition = target.position + target.forward * offset.z + target.up * offset.y + target.right * offset.x;
 
-        // Movemos el spotlight hacia la posición deseada
+        // Movemos el spotlight hacia la posiciï¿½n deseada --> seguir el personaje
         transform.position = desiredPosition;
 
-        // La dirección del spotlight apunta hacia el personaje
+        // La direcciï¿½n del spotlight apunta hacia el personaje --> seguir el personaje
         transform.LookAt(target);
 
-        // Rotamos el spotlight horizontalmente según el movimiento del mouse
-        float rotationSpeed = 2.0f; // Puedes ajustar la velocidad de rotación según sea necesario
+        // Rotamos el spotlight horizontalmente segï¿½n el movimiento del mouse
+        float rotationSpeed = 2.0f; // Puedes ajustar la velocidad de rotaciï¿½n segï¿½n sea necesario
         float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
         transform.RotateAround(target.position, Vector3.up, mouseX);
         if (Input.GetKeyDown(KeyCode.F))

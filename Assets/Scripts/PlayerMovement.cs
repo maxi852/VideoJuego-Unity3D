@@ -7,21 +7,37 @@ public class PlayerMovement : MonoBehaviour
     // Velocidad de movimiento del personaje
     public float speed = 5.0f;
 
+    public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad al correr
+    private bool isRunning = false; // Indica si el personaje estÔøΩ corriendo
+
     private void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = false; // para que no se vea el mouse
     }
 
-    private void Update()
+    private void Update() 
     {
         // Capturamos la entrada de teclado
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Calculamos la direcciÛn de movimiento basada en la rotaciÛn de la c·mara
+         // Verificar si se est√° corriendo (SHIFT + W)
+        if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
+
+        // Calculamos la direcci√≥n de movimiento basada en la rotaci√≥n de la c√°mara
         Vector3 moveDirection = (verticalInput * Camera.main.transform.forward + horizontalInput * Camera.main.transform.right).normalized;
 
-        // Movemos al personaje en la direcciÛn calculada
-        transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
+        // Aplicar multiplicador de velocidad si est√° corriendo
+        float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
+
+        // Movemos al personaje en la direcci√≥n calculada
+        transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
     }
 }

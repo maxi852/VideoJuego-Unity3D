@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public Transform target; // Objeto 3D que la cámara seguirá
-    public Vector3 offset; // Posición relativa de la cámara al objetivo
-    public float rotationSpeed = 5.0f; // Velocidad de rotación de la cámara
+    public Transform target; // Objeto 3D que la cï¿½mara seguirï¿½
+    public Vector3 offset; // Posiciï¿½n relativa de la cï¿½mara al objetivo
+    public float rotationSpeed = 5.0f; // Velocidad de rotaciï¿½n de la cï¿½mara
 
-    private float RotationHor = 0.0f; // Rotación horizontal de la cámara
+    private float RotationHor = 0.0f; // Rotaciï¿½n horizontal de la cï¿½mara
 
     private void LateUpdate()
     {
         if (!target)
             return;
 
-        //Rotamos la cámara horizontalmente según el movimiento del mouse
+        //Rotamos la cï¿½mara horizontalmente segï¿½n el movimiento del mouse
         RotationHor += rotationSpeed * Input.GetAxis("Mouse X");
 
-        // Aplicamos la rotación a la cámara
+        // Aplicamos la rotaciï¿½n a la cï¿½mara
         transform.rotation = Quaternion.Euler(0.0f, RotationHor, 0.0f);
 
-        // Calculamos la posición de la cámara
+        // Calculamos la posiciï¿½n de la cï¿½mara
         Vector3 desiredPosition = target.position + offset;
 
-        // Movemos la cámara hacia la posición 
+        // Movemos la cï¿½mara hacia la posiciï¿½n 
         transform.position = desiredPosition;
     }
 }
