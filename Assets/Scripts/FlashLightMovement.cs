@@ -8,7 +8,7 @@ public class FlashLightMovement : MonoBehaviour
     public Vector3 offset; // Posici�n relativa del spotlight al objetivo
 
     private Light spotlight; // Componente de luz del spotlight
-    public float defaultIntensity = 30.0f; // Intensidad por defecto del spotlight (osea linterna prendida)
+    public float defaultIntensity = 10.0f; // Intensidad por defecto del spotlight (osea linterna prendida)
     public float modifiedIntensity = 0.0f; // Intensidad modificada del spotlight (osea linterna apagada)
 
     private void Start()
