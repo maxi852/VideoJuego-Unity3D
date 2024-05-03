@@ -9,13 +9,16 @@ public class PlayerMovement : MonoBehaviour
 
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad al correr
     private bool isRunning = false; // Indica si el personaje est� corriendo
+    Rigidbody m_Rigidbody;
+    public float m_Speed;
 
     private void Start()
     {
         Cursor.visible = false; // para que no se vea el mouse
+        m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Update() 
+    private void FixedUpdate() 
     {
         // Capturamos la entrada de teclado
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -25,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
         {
             isRunning = true;
+            SwitchCollisionDetectionMode();
         }
         else
         {
@@ -38,6 +42,12 @@ public class PlayerMovement : MonoBehaviour
         float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
 
         // Movemos al personaje en la dirección calculada
-        transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
+        transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World);
+
+    void SwitchCollisionDetectionMode()
+    {
+        m_Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+    }
+
     }
 }
