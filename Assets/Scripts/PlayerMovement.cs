@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad al correr
     private bool isRunning = false; // Indica si el personaje est� corriendo
     Rigidbody rb;
-    public float m_Speed;
     float horizontalInput;
     float verticalInput;
     private bool isFallen = false;
@@ -31,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
         {
             isRunning = true;
-            SwitchCollisionDetectionMode();
+            //SwitchCollisionDetectionMode();
         }
         else
         {
@@ -56,20 +55,10 @@ public class PlayerMovement : MonoBehaviour
     }    
     
     
-    void SwitchCollisionDetectionMode()
+    /*void SwitchCollisionDetectionMode()
     {
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-    }
-
-    void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag("Limits"))
-        {
-            Debug.Log("Colision");
-            this.transform.Translate(Vector3.right * -horizontalInput * Time.fixedDeltaTime);
-            this.transform.Translate(Vector3.forward * -verticalInput * Time.fixedDeltaTime);
-        }
-    }
+    }*/
 
     void OnCollisionEnter(Collision other)
     {
