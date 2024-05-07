@@ -9,22 +9,29 @@ public class PlayerMovement : MonoBehaviour
 
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad al correr
     private bool isRunning = false; // Indica si el personaje est� corriendo
+    Rigidbody rb;
+    public float m_Speed;
+    float horizontalInput;
+    float verticalInput;
+    private bool isFallen = false;
 
     private void Start()
     {
         Cursor.visible = false; // para que no se vea el mouse
+        rb = GetComponent<Rigidbody>();
     }
 
-    private void Update() 
+    private void FixedUpdate() 
     {
         // Capturamos la entrada de teclado
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
 
          // Verificar si se está corriendo (SHIFT + W)
         if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
         {
             isRunning = true;
+            SwitchCollisionDetectionMode();
         }
         else
         {
@@ -38,6 +45,40 @@ public class PlayerMovement : MonoBehaviour
         float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
 
         // Movemos al personaje en la dirección calculada
-        transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
+        transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World);
+
+        if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        {
+            transform.rotation = Quaternion.identity;
+            rb.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezeRotationX;
+        }
+
+    }    
+    
+    
+    void SwitchCollisionDetectionMode()
+    {
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
+
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Limits"))
+        {
+            Debug.Log("Colision");
+            this.transform.Translate(Vector3.right * -horizontalInput * Time.fixedDeltaTime);
+            this.transform.Translate(Vector3.forward * -verticalInput * Time.fixedDeltaTime);
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Roots"))
+        {
+            Debug.Log("Colision");
+            rb.constraints = RigidbodyConstraints.None;
+            isFallen = true;
+        }
+    }
+
 }
