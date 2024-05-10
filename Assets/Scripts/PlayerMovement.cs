@@ -9,10 +9,13 @@ public class PlayerMovement : MonoBehaviour
 
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad al correr
     private bool isRunning = false; // Indica si el personaje est� corriendo
+    private bool isFallen = false;
+    public Rigidbody rb;
 
     private void Start()
     {
         Cursor.visible = false; // para que no se vea el mouse
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update() 
@@ -39,5 +42,25 @@ public class PlayerMovement : MonoBehaviour
 
         // Movemos al personaje en la dirección calculada
         transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
+
+        //Levantamos al personaje caído y le devolvemos sus contraints
+         if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        {
+            transform.rotation = Quaternion.identity;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            isFallen = false;
+        }
+
     }
+
+    //Función para que el jugador pueda tropezar
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Obstacle1"))
+        {
+            rb.constraints = RigidbodyConstraints.None;
+            isFallen = true;
+        }
+    }
+
 }
