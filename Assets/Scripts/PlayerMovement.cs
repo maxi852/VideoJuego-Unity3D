@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
 
         //Levantamos al personaje caído y le devolvemos sus contraints
-         if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        if (Input.GetKeyDown(KeyCode.G) && isFallen)
         {
             transform.rotation = Quaternion.identity;
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
