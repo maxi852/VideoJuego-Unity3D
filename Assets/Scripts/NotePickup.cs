@@ -9,7 +9,7 @@ public class NotePickup : MonoBehaviour
     private bool noteCollected = false; //variable booleana para saber si la nota ha sido recolectada
     private string note; 
     private char[] word = new char[3];
-    private string wordd;
+    private string completeWord;
     public Text claveTexto;
     private GameObject go;
     // Update is called once per frame
@@ -19,13 +19,13 @@ void Start()
         word[0] = '-';
         word[1] = '-';
         word[2] = '-';
-        wordd = "";
+        completeWord = "";
         for (int i = 0; i < word.Length; i++)
             {
-                wordd = wordd + word[i];
+                completeWord += word[i];
             }
-        claveTexto.text = wordd;
-        Debug.Log(wordd);
+        claveTexto.text = completeWord;
+        
     }
 
     void Update()
@@ -33,6 +33,8 @@ void Start()
         
         if (isPlayerInRange && !noteCollected && Input.GetKeyDown(KeyCode.E)) //si el jugador está cerca de la nota, la nota no ha sido recolectada y el jugador presiona la tecla E
         {
+
+            Debug.Log(note);
             CollectNote(note); //llama a la función CollectNote
         }
     }
@@ -41,6 +43,26 @@ void Start()
     {
         if (other.CompareTag("Player")) //si el objeto que entra en el área es el jugador
         {
+            string objetoColisionado;
+
+            switch (this.gameObject.tag)
+            {
+                case "n1":
+                    note = "n1";
+                    objetoColisionado = "n1";
+                    break;
+                case "n2":
+                    objetoColisionado = "n2";
+                    break;
+                case "n3":
+                    objetoColisionado = "n3";
+                    break;
+                default:
+                    objetoColisionado = "Objeto desconocido";
+                    break;
+            }
+
+            Debug.Log(objetoColisionado + " ha colisionado con humano");
             isPlayerInRange = true; //la variable isPlayerInRange se vuelve verdadera
         }
     }
@@ -49,10 +71,6 @@ void Start()
     {
         if (other.CompareTag("Player")) //si el objeto que sale del área es el jugador
         {
-            if (go.tag == "n1"){
-                Debug.Log("vas a ver");
-                note = "n1";
-            }
             isPlayerInRange = false; //la variable isPlayerInRange se vuelve falsa
         }
     }
@@ -69,8 +87,13 @@ void Start()
         if (note == "n1"){
             
             word[1] = 'o';
-            claveTexto.text = wordd;
-            Debug.Log("ifn1");
+            completeWord = "";
+            for (int i = 0; i < word.Length; i++)
+            {
+                completeWord += word[i];
+            }
+            Debug.Log(completeWord);
+            claveTexto.text = completeWord;
         }
     }
 }

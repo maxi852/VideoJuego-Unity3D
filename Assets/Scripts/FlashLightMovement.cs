@@ -10,11 +10,22 @@ public class FlashLightMovement : MonoBehaviour
     private Light spotlight; // Componente de luz del spotlight
     public float defaultIntensity = 5.0f; // Intensidad por defecto del spotlight (osea linterna prendida)
     public float modifiedIntensity = 0.0f; // Intensidad modificada del spotlight (osea linterna apagada)
+    public float modifiedIntensityHouse = 0.0f; // Intensidad modificada del spotlight (osea linterna apagada)
 
+    private Transform houseTransform; // Almacena la referencia al objeto "House"
+    private Transform blake; // Almacena la referencia al objeto "Blake"
+    private Transform trees; // Almacena la referencia al objeto "Blake"
+
+    private float distanciaX; // Almacena la distancia en el eje X
+    private bool near = false;
     private void Start()
     {
         spotlight = GetComponent<Light>(); //agarramos el componente de luz del spotlight
         spotlight.intensity = defaultIntensity; //inicializamos la intensidad del spotlight, osea prendida
+
+        houseTransform = GameObject.Find("house_aband (1)").transform;
+        blake = GameObject.Find("The Adventurer Blake").transform;
+        trees = GameObject.Find("Arboles").transform;
     }
 
     private void LateUpdate()
@@ -40,6 +51,43 @@ public class FlashLightMovement : MonoBehaviour
         {
             // condicion para ver en que intensidad se encuentra la lintera y modificar a la otra opcion
             spotlight.intensity = (spotlight.intensity == defaultIntensity) ? modifiedIntensity : defaultIntensity;
+        }
+
+        Debug.Log(Vector3.Distance(blake.position, trees.position));
+
+        distanciaX = Vector3.Distance(blake.position, houseTransform.position);
+        if (distanciaX < 36)
+        {
+            spotlight.intensity = 1f;
+            near = true;
+        }
+        else if (distanciaX < 42)
+        {
+            spotlight.intensity = 4f;
+            near = true;
+        }
+        else if (distanciaX < 47)
+        {
+            spotlight.intensity = 7f;
+            near = true;
+        }
+        else if (distanciaX < 52)
+        {
+            spotlight.intensity = 10f;
+            near = true;
+        }
+        else if (distanciaX < 56)
+        {
+            spotlight.intensity = modifiedIntensityHouse;
+            near = true;
+        } else
+        {
+            if (near) 
+            {
+                spotlight.intensity = (spotlight.intensity == defaultIntensity) ? modifiedIntensity : defaultIntensity;
+                near = false;
+            }
+            
         }
     }
 }
