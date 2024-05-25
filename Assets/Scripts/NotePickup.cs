@@ -7,8 +7,10 @@ public class NotePickup : MonoBehaviour
 {
     private bool isPlayerInRange = false; //variable booleana para saber si el jugador está cerca de la nota
     private bool noteCollected = false; //variable booleana para saber si la nota ha sido recolectada
-    private string note; 
-    private char[] word = new char[3];
+    private string note;
+    private char letter;
+    private int position;
+    private static char[] word = new char[8];
     private string completeWord;
     public Text claveTexto;
     private GameObject go;
@@ -16,9 +18,14 @@ public class NotePickup : MonoBehaviour
 void Start()
     {
         go = GetComponent<GameObject>();
-        word[0] = '-';
-        word[1] = '-';
-        word[2] = '-';
+        word[0] = '_';
+        word[1] = '_';
+        word[2] = '_';
+        word[3] = '_';
+        word[4] = '_';
+        word[5] = '_';
+        word[6] = '_';
+        word[7] = '_';
         completeWord = "";
         for (int i = 0; i < word.Length; i++)
             {
@@ -35,7 +42,7 @@ void Start()
         {
 
             Debug.Log(note);
-            CollectNote(note); //llama a la función CollectNote
+            CollectNote(letter,position); //llama a la función CollectNote
         }
     }
 
@@ -43,26 +50,42 @@ void Start()
     {
         if (other.CompareTag("Player")) //si el objeto que entra en el área es el jugador
         {
-            string objetoColisionado;
-
             switch (this.gameObject.tag)
             {
                 case "n1":
-                    note = "n1";
-                    objetoColisionado = "n1";
+                    letter = 'U';
+                    position = 2;
                     break;
                 case "n2":
-                    objetoColisionado = "n2";
+                    letter = 'n';
+                    position = 3;
                     break;
                 case "n3":
-                    objetoColisionado = "n3";
+                    letter = 'D';
+                    position = 4;
+                    break;
+                case "n4":
+                    letter = 's';
+                    position = 1;
+                    break;
+                case "n5":
+                    letter = 'i';
+                    position = 5;
+                    break;
+                case "n6":
+                    letter = 'z';
+                    position = 7;
+                    break;
+                case "n7":
+                    letter = 'E';
+                    position = 0;
                     break;
                 default:
-                    objetoColisionado = "Objeto desconocido";
+                    letter = 'e';
+                    position = 6;
                     break;
             }
 
-            Debug.Log(objetoColisionado + " ha colisionado con humano");
             isPlayerInRange = true; //la variable isPlayerInRange se vuelve verdadera
         }
     }
@@ -75,7 +98,7 @@ void Start()
         }
     }
 
-    void CollectNote(string note)
+    void CollectNote(char letter, int position)
     {
         //Acá tenemos que agregar un script de sonido para cuando se agarra
 
@@ -84,16 +107,15 @@ void Start()
         Debug.Log("collect");
         // Marca la nota como recolectada para evitar que se recolecte múltiples veces
         noteCollected = true;
-        if (note == "n1"){
-            
-            word[1] = 'o';
-            completeWord = "";
-            for (int i = 0; i < word.Length; i++)
-            {
-                completeWord += word[i];
-            }
-            Debug.Log(completeWord);
-            claveTexto.text = completeWord;
+
+        //Actualizo el texto con las letras
+        word[position] = letter;
+        completeWord = "";
+        for (int i = 0; i < word.Length; i++)
+        {
+            completeWord += word[i];
         }
+        Debug.Log(completeWord);
+        claveTexto.text = completeWord;
     }
 }

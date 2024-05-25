@@ -18,6 +18,7 @@ public class FlashLightMovement : MonoBehaviour
 
     private float distanciaX; // Almacena la distancia en el eje X
     private bool near = false;
+
     private void Start()
     {
         spotlight = GetComponent<Light>(); //agarramos el componente de luz del spotlight
@@ -25,7 +26,6 @@ public class FlashLightMovement : MonoBehaviour
 
         houseTransform = GameObject.Find("house_aband (1)").transform;
         blake = GameObject.Find("The Adventurer Blake").transform;
-        trees = GameObject.Find("Arboles").transform;
     }
 
     private void LateUpdate()
@@ -52,8 +52,6 @@ public class FlashLightMovement : MonoBehaviour
             // condicion para ver en que intensidad se encuentra la lintera y modificar a la otra opcion
             spotlight.intensity = (spotlight.intensity == defaultIntensity) ? modifiedIntensity : defaultIntensity;
         }
-
-        Debug.Log(Vector3.Distance(blake.position, trees.position));
 
         distanciaX = Vector3.Distance(blake.position, houseTransform.position);
         if (distanciaX < 36)
@@ -89,5 +87,6 @@ public class FlashLightMovement : MonoBehaviour
             }
             
         }
+
     }
 }
