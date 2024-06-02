@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5.0f;
-    public float runSpeedMultiplier = 3.0f;
-    private bool isRunning = false;
-    private bool isWalking = false;
+    public float speed = 5.0f; // Velocidad de movimiento
+    public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad para correr
+    private bool isRunning = false; // Indica si el personaje está corriendo
+    private bool isWalking = false; // Indica si el personaje está caminando
     private bool isJumping = false; // Indica si el personaje está saltando
     private bool isOnGround = false; // Indica si el personaje está en el suelo
-    private bool isFallen = false;
-    public Rigidbody rb;
-    private Animator animator;
-    private AudioSource audioSource;
+    private bool isFallen = false; // Indica si el personaje ha caído
+    public Rigidbody rb; // Componente Rigidbody del personaje
+    private Animator animator; // Componente Animator del personaje
+    private AudioSource audioSource; // Componente AudioSource del personaje
 
-    public AudioClip walkSound;
-    public AudioClip runSound;
+    public AudioClip walkSound; // Sonido de caminar
+    public AudioClip runSound; // Sonido de correr
     public AudioClip jumpSound; // Sonido de salto
 
     public float jumpForce = 300.0f; // Fuerza del salto
@@ -36,7 +36,8 @@ public class PlayerMovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        isOnGround = Physics.CheckSphere(groundCheck.position, 0.1f, groundMask); // Verificar si el personaje está en el suelo
+        isOnGround = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask); // Verificar si el personaje está en el suelo
+        Debug.Log("isOnGround: " + isOnGround); // Mensaje de depuración para verificar si el personaje está en el suelo
 
         if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
         {
@@ -47,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
             isRunning = false;
         }
 
-        if (verticalInput > 0 && !isRunning)
+        if (Mathf.Abs(verticalInput) > 0 && !isRunning) // Usar valor absoluto para incluir tanto W como S
         {
             isWalking = true;
         }
