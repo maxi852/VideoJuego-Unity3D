@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f; // Velocidad de movimiento
+    public float RotationSpeed = 1.0f;
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad para correr
     private bool isRunning = false; // Indica si el personaje está corriendo
     private bool isWalking = false; // Indica si el personaje está caminando
@@ -31,10 +32,14 @@ public class PlayerMovement : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+
+        animator.SetFloat("VelX", horizontalInput);
+        animator.SetFloat("VelY", verticalInput);
+
 
         isOnGround = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask); // Verificar si el personaje está en el suelo
         Debug.Log("isOnGround: " + isOnGround); // Mensaje de depuración para verificar si el personaje está en el suelo
@@ -104,12 +109,15 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDirection = (verticalInput * Camera.main.transform.forward + horizontalInput * Camera.main.transform.right).normalized;
         float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
-        transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
+        rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World);
+
+        float rotationY = Input.GetAxis("Mouse X");
+        rb.transform.Rotate(new Vector3(0, rotationY * Time.fixedDeltaTime * RotationSpeed, 0));
 
         if (Input.GetKeyDown(KeyCode.G) && isFallen)
         {
             transform.rotation = Quaternion.identity;
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
             isFallen = false;
         }
     }

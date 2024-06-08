@@ -5,11 +5,21 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle1
+  - Ground
+  - n6
+  - n8
+  - n3
+  - n4
+  - n2
+  - n1
+  - n7
+  - n5
+  - trees
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
