@@ -3,10 +3,12 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraMovement
     - FlashLightMovement
+    - GirlBehavior
     - MainMenu
     - NotePickup
     - PauseMenu
     - PlayerMovement
+    - PlayerRotation
     Unity.ProBuilder.dll:
     - UnityEngine.ProBuilder.ProBuilderMesh
     - UnityEngine.ProBuilder.Shapes.ProBuilderShape
@@ -20,6 +22,14 @@ ScriptsOnlyBuild:
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
     - TMPro.TextMeshProUGUI
+    UnityEditor.Graphs.dll:
+    - UnityEditor.Graphs.AnimationBlendTree.Graph
+    - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
+    - UnityEditor.Graphs.AnimationStateMachine.Graph
+    - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
+    - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -97,29 +107,29 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1612}
+      Script: {instanceID: 1638}
     - Class: 114
-      Script: {instanceID: 2242}
+      Script: {instanceID: 2270}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2708}
     - Class: 114
-      Script: {instanceID: 2902}
+      Script: {instanceID: 2930}
     - Class: 114
-      Script: {instanceID: 3214}
+      Script: {instanceID: 3242}
     - Class: 114
-      Script: {instanceID: 4288}
+      Script: {instanceID: 4318}
     - Class: 114
-      Script: {instanceID: 4560}
+      Script: {instanceID: 4594}
     - Class: 114
-      Script: {instanceID: 5332}
+      Script: {instanceID: 5368}
     - Class: 114
-      Script: {instanceID: 5602}
+      Script: {instanceID: 5638}
     - Class: 114
-      Script: {instanceID: 5854}
+      Script: {instanceID: 5890}
     - Class: 114
-      Script: {instanceID: 5934}
+      Script: {instanceID: 5970}
     - Class: 114
-      Script: {instanceID: 6452}
+      Script: {instanceID: 6488}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -161,6 +171,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
+    - Class: 74
+      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
     - Class: 82
@@ -171,6 +183,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
+    - Class: 91
+      Script: {instanceID: 0}
     - Class: 95
       Script: {instanceID: 0}
     - Class: 104
@@ -180,27 +194,33 @@ ScriptsOnlyBuild:
     - Class: 111
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1612}
+      Script: {instanceID: 1638}
     - Class: 114
-      Script: {instanceID: 1938}
+      Script: {instanceID: 1964}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2108}
     - Class: 114
-      Script: {instanceID: 2902}
+      Script: {instanceID: 2708}
     - Class: 114
-      Script: {instanceID: 3240}
+      Script: {instanceID: 2930}
     - Class: 114
-      Script: {instanceID: 4300}
+      Script: {instanceID: 3268}
     - Class: 114
-      Script: {instanceID: 4976}
+      Script: {instanceID: 3998}
     - Class: 114
-      Script: {instanceID: 5332}
+      Script: {instanceID: 4330}
     - Class: 114
-      Script: {instanceID: 5934}
+      Script: {instanceID: 5010}
     - Class: 114
-      Script: {instanceID: 6096}
+      Script: {instanceID: 5022}
     - Class: 114
-      Script: {instanceID: 182350}
+      Script: {instanceID: 5368}
+    - Class: 114
+      Script: {instanceID: 5638}
+    - Class: 114
+      Script: {instanceID: 5970}
+    - Class: 114
+      Script: {instanceID: 6132}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -288,10 +308,16 @@ ScriptsOnlyBuild:
     className: UnityOnMouseExitMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 751e5bae2a317288c2ab58d66687092b
+      Hash: 067d829af1710415cf3a16665571ad7c
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: NotePickup
+  - hash:
+      serializedVersion: 2
+      Hash: 10e88844700f0d31fbb570006cd09263
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: PlayerRotation
   - hash:
       serializedVersion: 2
       Hash: 751e5bae2a317288c2ab58d66687092b
@@ -588,6 +614,12 @@ ScriptsOnlyBuild:
     className: UnityOnPointerExitMessageListener
   - hash:
       serializedVersion: 2
+      Hash: abc150cf25079dd69602e5e7d4ed01a9
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: PauseMenu
+  - hash:
+      serializedVersion: 2
       Hash: b18151310f999106767addd7177d1a99
     assemblyName: UnityEngine.UI
     namespaceName: UnityEngine.UI
@@ -642,7 +674,7 @@ ScriptsOnlyBuild:
     className: TMP_Settings
   - hash:
       serializedVersion: 2
-      Hash: 4dfde2c3ff6eeb792d99914867cea405
+      Hash: 68655815be62899eab2ee552dafc0cb7
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PlayerMovement
@@ -702,7 +734,7 @@ ScriptsOnlyBuild:
     className: ProBuilderMesh
   - hash:
       serializedVersion: 2
-      Hash: e96ad79c2ee01b576ffa39813023bcd9
+      Hash: 1647d55bc07bd34cecfa1ff54a59fcdb
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: FlashLightMovement
@@ -712,6 +744,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: MacroScriptableObject
+  - hash:
+      serializedVersion: 2
+      Hash: 8b3ffa942cc15ba5f981eb338fa6aff4
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GirlBehavior
   - hash:
       serializedVersion: 2
       Hash: 142264d9d6b0842e37d4aad2e8ff56d0
@@ -1138,12 +1176,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: UnityOnSliderValueChangedMessageListener
-  - hash:
-      serializedVersion: 2
-      Hash: abc150cf25079dd69602e5e7d4ed01a9
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: PauseMenu
   platform: 19
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

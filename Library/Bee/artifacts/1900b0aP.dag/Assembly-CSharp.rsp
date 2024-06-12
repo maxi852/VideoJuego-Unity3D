@@ -311,9 +311,11 @@
 "Assets/MainMenu.cs"
 "Assets/Scripts/CameraMovement.cs"
 "Assets/Scripts/FlashLightMovement.cs"
+"Assets/Scripts/GirlBehaviour.cs"
 "Assets/Scripts/NotePickup.cs"
 "Assets/Scripts/PauseMenu.cs"
 "Assets/Scripts/PlayerMovement.cs"
+"Assets/Scripts/PlayerRotation.cs"
 -langversion:9.0
 
 /deterministic

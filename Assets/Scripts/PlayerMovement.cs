@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip runSound; // Sonido de correr
     public AudioClip jumpSound; // Sonido de salto
 
-    public float jumpForce = 300.0f; // Fuerza del salto
+    public float jumpForce = 100.0f; // Fuerza del salto
     public Transform groundCheck; // Punto de chequeo para detectar si el personaje está en el suelo
     public LayerMask groundMask; // Capa de suelo
 
@@ -66,8 +66,10 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = true;
             rb.AddForce(Vector3.up * jumpForce); // Aplicar una fuerza hacia arriba para el salto
-            audioSource.clip = jumpSound; // Configurar el sonido de salto
-            audioSource.Play(); // Reproducir el sonido de salto
+            animator.Play("Jump");
+            //audioSource.clip = jumpSound; // Configurar el sonido de salto
+            //audioSource.Play(); // Reproducir el sonido de salto
+
         }
 
         animator.SetBool("isWalking", isWalking);
