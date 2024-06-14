@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f; // Velocidad de movimiento
-    public float RotationSpeed = 1.0f;
+    //public float RotationSpeed = 1.0f;
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad para correr
     private bool isRunning = false; // Indica si el personaje está corriendo
     private bool isWalking = false; // Indica si el personaje está caminando
@@ -113,8 +113,8 @@ public class PlayerMovement : MonoBehaviour
         float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
         rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World);
 
-        float rotationY = Input.GetAxis("Mouse X");
-        rb.transform.Rotate(new Vector3(0, rotationY * Time.fixedDeltaTime * RotationSpeed, 0));
+        //float rotationY = Input.GetAxis("Mouse X");
+        //rb.transform.Rotate(new Vector3(0, rotationY * Time.fixedDeltaTime * RotationSpeed, 0));
 
         if (Input.GetKeyDown(KeyCode.G) && isFallen)
         {
