@@ -36,6 +36,12 @@ public class EnemyScript : MonoBehaviour
                 ani.SetBool("idle", false);
                 ani.SetBool("walk", true);
                 break;
+            case 2:
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
+                transform.Translate(Vector3.forward * 0.1f * Time.deltaTime);
+                ani.SetBool("idle", false);
+                ani.SetBool("walk", true);
+                break;
         }
     }
     void Update()
