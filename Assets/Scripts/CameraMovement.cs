@@ -12,6 +12,8 @@ public class CameraMovement : MonoBehaviour
     private float RotationHor = 0.0f; // Rotación horizontal de la cámara
     private float RotationVer = 0.0f; // Rotación vertical de la cámara
 
+    
+
     private void LateUpdate()
     {
         if (!target)

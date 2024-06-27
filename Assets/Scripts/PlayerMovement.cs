@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f; // Velocidad de movimiento
-    //public float RotationSpeed = 1.0f;
     public float runSpeedMultiplier = 3.0f; // Multiplicador de velocidad para correr
     private bool isRunning = false; // Indica si el personaje está corriendo
     private bool isWalking = false; // Indica si el personaje está caminando
@@ -23,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck; // Punto de chequeo para detectar si el personaje está en el suelo
     public LayerMask groundMask; // Capa de suelo
 
+    public bool canMove = true;
+
     private void Start()
     {
         Cursor.visible = false;
@@ -39,38 +40,43 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("VelX", horizontalInput);
         animator.SetFloat("VelY", verticalInput);
-
-
+        Debug.Log("canMove" + canMove);
         isOnGround = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask); // Verificar si el personaje está en el suelo
-        Debug.Log("isOnGround: " + isOnGround); // Mensaje de depuración para verificar si el personaje está en el suelo
 
-        if (Input.GetKey(KeyCode.LeftShift) && verticalInput > 0)
+        if (canMove)
         {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
+            Debug.Log("la wataa");
+            // Detectar si el jugador está corriendo
+            if (Input.GetKey(KeyCode.LeftShift) && (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0))
+            {
+                isRunning = true;
+            }
+            else
+            {
+                isRunning = false;
+            }
+            
+        
+            if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
+            {
+                isWalking = !isRunning;
+            }
+            else
+            {
+                isWalking = false;
+            }
+
+            if (isOnGround && Input.GetKeyDown(KeyCode.Space)) // Verificar si el personaje está en el suelo y se presionó la barra espaciadora
+            {
+                isJumping = true;
+                rb.AddForce(Vector3.up * jumpForce); // Aplicar una fuerza hacia arriba para el salto
+                animator.Play("Jump");
+
+            }
         }
 
-        if (Mathf.Abs(verticalInput) > 0 && !isRunning) // Usar valor absoluto para incluir tanto W como S
-        {
-            isWalking = true;
-        }
-        else
-        {
-            isWalking = false;
-        }
+        
 
-        if (isOnGround && Input.GetKeyDown(KeyCode.Space)) // Verificar si el personaje está en el suelo y se presionó la barra espaciadora
-        {
-            isJumping = true;
-            rb.AddForce(Vector3.up * jumpForce); // Aplicar una fuerza hacia arriba para el salto
-            animator.Play("Jump");
-            //audioSource.clip = jumpSound; // Configurar el sonido de salto
-            //audioSource.Play(); // Reproducir el sonido de salto
-
-        }
 
         animator.SetBool("isWalking", isWalking);
         animator.SetBool("isRunning", isRunning);
@@ -99,7 +105,40 @@ public class PlayerMovement : MonoBehaviour
             else if (!audioSource.isPlaying)
             {
                 audioSource.Play();
+            } else if (isJumping)
+            {
+                if (audioSource.clip != jumpSound)
+                {
+                    Debug.Log("if");
+                    audioSource.clip = jumpSound; // Configurar el sonido de salto
+                    audioSource.Play(); // Reproducir el sonido de salto
+                    isJumping = false;
+                }
+                else if (!audioSource.isPlaying)
+                {
+                    Debug.Log("elseif");
+                    audioSource.Play();
+                    isJumping = false;
+                }
+
             }
+        }
+        else if (isJumping)
+        {
+            if (audioSource.clip != jumpSound)
+            {
+                Debug.Log("if");
+                audioSource.clip = jumpSound; // Configurar el sonido de salto
+                audioSource.Play(); // Reproducir el sonido de salto
+                isJumping = false;
+            }
+            else if (!audioSource.isPlaying)
+            {
+                Debug.Log("elseif");
+                audioSource.Play();
+                isJumping = false;
+            }
+            
         }
         else
         {
@@ -109,27 +148,28 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        Vector3 moveDirection = (verticalInput * Camera.main.transform.forward + horizontalInput * Camera.main.transform.right).normalized;
-        float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed;
-        rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World);
-
-        //float rotationY = Input.GetAxis("Mouse X");
-        //rb.transform.Rotate(new Vector3(0, rotationY * Time.fixedDeltaTime * RotationSpeed, 0));
-
-        if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        if (canMove)
         {
-            transform.rotation = Quaternion.identity;
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-            isFallen = false;
+            Vector3 moveDirection = (verticalInput * Camera.main.transform.forward + horizontalInput * Camera.main.transform.right).normalized; //Para calcular direccion de movimiento del jugador
+            float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed; //Determina velocidad actual del jugador
+            rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World); //Mueve al jugador a la direccion calculada con la velocidad calculada
         }
+        
+
+        //if (Input.GetKeyDown(KeyCode.G) && isFallen)
+        //{
+        //    transform.rotation = Quaternion.identity;
+        //    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        //    isFallen = false;
+        //}
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Obstacle1"))
-        {
-            rb.constraints = RigidbodyConstraints.None;
-            isFallen = true;
-        }
-    }
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    if (other.gameObject.CompareTag("Obstacle1"))
+    //    {
+    //        rb.constraints = RigidbodyConstraints.None;
+    //        isFallen = true;
+    //    }
+    //}
 }
