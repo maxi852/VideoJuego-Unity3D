@@ -15,29 +15,47 @@ public class EnemyScript : MonoBehaviour
 
     // Velocidad de movimiento
     public float speed = 5f;
-    public float rotationSpeed = 5.0f;
-    private bool isChasing = false; // Indica si el personaje está corriendo
-    private bool die = false; // Indica si el personaje está corriendo
+    //public float rotationSpeed = 5.0f;
+    private bool isChasing = false; // Indica si el personaje estï¿½ corriendo
+    private bool die = false; // Indica si el personaje estï¿½ corriendo
     public float distanceInFront = 10.0f;
 
     public float tiempoTranscurrido = 0.0f;
 
     public PlayerMovement playerMov;
-    
+
+    //Perdiste el juego
+    public GameObject blackScreen;
+    public GameObject gameOverText;
+
+    //Sonidos de correr del enemigo
+    private AudioSource audioSource;
+    public AudioClip enemyRun;
+    private bool isRunningSoundPlaying = false;
+
     void Start()
     {
         ani = GetComponent<Animator>();
         ani.SetBool("run", true);
+
+        //Pantalla negra de que perdiste
+        blackScreen.SetActive(false); //Ocultar pantalla negra
+        gameOverText.SetActive(false); //Ocultar texto de game over
+
+        //AudioSource de correr enemigo
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = enemyRun;
+        audioSource.loop = true;
     }
 
     void Update()
     {
-         if (!isChasing)
+        if (!isChasing)
         {
             tiempoTranscurrido += Time.deltaTime;
-        } 
+        }
         //El enemigo esta corriendo al personaje.
-        else if(!die)
+        else if (!die)
         {
             // Si no hay un GameObject objetivo definido, salir
             if (targetObject == null) return;
@@ -54,9 +72,24 @@ public class EnemyScript : MonoBehaviour
             //El enemigo rote y nos persiga siempre de frente
             transform.LookAt(targetObject.transform);
 
+            if (!isRunningSoundPlaying)
+            {
+                audioSource.Play();
+                Debug.Log("Reproduciendo sonido de correr");
+                isRunningSoundPlaying = true;
+            }
+            else
+            {
+                if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca
+                {
+                    audioSource.Stop();
+                    Debug.Log("Deteniendo sonido de correr");
+                    isRunningSoundPlaying = false;
+                }
+            }
+
         }
-        
-        
+
         if (tiempoTranscurrido >= 1.0f)
         {
             isChasing = true;
@@ -77,8 +110,6 @@ public class EnemyScript : MonoBehaviour
             //transform.position = new Vector3(40.0f, 0.0f, -3.0f);
             //transform.position = new Vector3(randomX, randomY, randomZ);  
         }
-
-        
     }
 
     void OnTriggerEnter(Collider other)
@@ -101,8 +132,14 @@ public class EnemyScript : MonoBehaviour
 
             //Mandar al personaje posicion donde no hay nada
             //targetObject.transform.position = new Vector3(4f, 2f, -214f);
-            
 
+            //audio
+            if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca
+            {
+                audioSource.Stop();
+                Debug.Log("Deteniendo sonido de correr x ataque");
+                isRunningSoundPlaying = false;
+            }
 
             Vector3 positionInFront = targetObject.transform.position + targetObject.transform.forward * distanceInFront;
             Debug.Log(positionInFront + " pos");
@@ -111,8 +148,17 @@ public class EnemyScript : MonoBehaviour
             transform.LookAt(targetObject.transform);
             ani.SetBool("idle", false);
             ani.SetBool("Attack1", true);
+            // Mostrar pantalla negra y texto de "Perdiste"
+            StartCoroutine(ShowGameOverScreen());
+        }
+        IEnumerator ShowGameOverScreen()
+        {
+            // Esperar un poco antes de mostrar la pantalla de "Perdiste" para permitir que se reproduzca la animaciÃ³n de ataque
+            yield return new WaitForSeconds(2.0f);
+
+            // Activar la pantalla negra y el texto de "Perdiste"
+            blackScreen.SetActive(true);
+            gameOverText.SetActive(true);
         }
     }
-
-
 }

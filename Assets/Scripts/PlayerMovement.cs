@@ -55,8 +55,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 isRunning = false;
             }
-            
-        
+
+
             if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
             {
                 isWalking = !isRunning;
@@ -75,37 +75,38 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        
-
-
         animator.SetBool("isWalking", isWalking);
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isJumping", isJumping); // Configurar el parámetro de animación de salto
 
         // Controlar el sonido de caminar y correr
-        if (isWalking)
+        if (canMove)
         {
-            if (audioSource.clip != walkSound)
+            if (isWalking)
             {
-                audioSource.clip = walkSound;
-                audioSource.Play();
+                if (audioSource.clip != walkSound)
+                {
+                    audioSource.clip = walkSound;
+                    audioSource.Play();
+                }
+                else if (!audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
             }
-            else if (!audioSource.isPlaying)
+            else if (isRunning)
             {
-                audioSource.Play();
+                if (audioSource.clip != runSound)
+                {
+                    audioSource.clip = runSound;
+                    audioSource.Play();
+                }
+                else if (!audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
             }
-        }
-        else if (isRunning)
-        {
-            if (audioSource.clip != runSound)
-            {
-                audioSource.clip = runSound;
-                audioSource.Play();
-            }
-            else if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            } else if (isJumping)
+            else if (isJumping)
             {
                 if (audioSource.clip != jumpSound)
                 {
@@ -120,26 +121,16 @@ public class PlayerMovement : MonoBehaviour
                     audioSource.Play();
                     isJumping = false;
                 }
+            }
+            else
+            {
+                if (audioSource.isPlaying)
+                {
+                    audioSource.Stop();
+                }
+            }
+        }
 
-            }
-        }
-        else if (isJumping)
-        {
-            if (audioSource.clip != jumpSound)
-            {
-                Debug.Log("if");
-                audioSource.clip = jumpSound; // Configurar el sonido de salto
-                audioSource.Play(); // Reproducir el sonido de salto
-                isJumping = false;
-            }
-            else if (!audioSource.isPlaying)
-            {
-                Debug.Log("elseif");
-                audioSource.Play();
-                isJumping = false;
-            }
-            
-        }
         else
         {
             if (audioSource.isPlaying)
@@ -154,7 +145,6 @@ public class PlayerMovement : MonoBehaviour
             float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed; //Determina velocidad actual del jugador
             rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World); //Mueve al jugador a la direccion calculada con la velocidad calculada
         }
-        
 
         //if (Input.GetKeyDown(KeyCode.G) && isFallen)
         //{
