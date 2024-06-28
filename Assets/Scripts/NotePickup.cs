@@ -20,8 +20,12 @@ public class NotePickup : MonoBehaviour
     // Update is called once per frame
     public GameObject fogObject; // Referencia al objeto de la niebla
     public GameObject exitObject; // Referencia al objeto de Exit
+
+    public AudioClip paper; // Sonido de la nota
+    public AudioSource audioSource; // Componente AudioSource de la nota
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         go = GetComponent<GameObject>();
         word[0] = '_';
         word[1] = '_';
@@ -37,7 +41,6 @@ public class NotePickup : MonoBehaviour
                 completeWord += word[i];
             }
         claveTexto.text = completeWord;
-        
     }
 
     void Update()
@@ -106,13 +109,12 @@ public class NotePickup : MonoBehaviour
     void CollectNote(char letter, int position)
     {
         //Acá tenemos que agregar un script de sonido para cuando se agarra
-
+        audioSource.PlayOneShot(paper); // Reproducir el sonido de la nota
         // Desactiva el objeto de la nota para que desaparezca
         gameObject.SetActive(false);
         Debug.Log("collect");
         // Marca la nota como recolectada para evitar que se recolecte múltiples veces
         noteCollected = true;
-
         //Actualizo el texto con las letras
         word[position] = letter;
         completeWord = "";

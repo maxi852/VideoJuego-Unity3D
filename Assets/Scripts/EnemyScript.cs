@@ -20,13 +20,13 @@ public class EnemyScript : MonoBehaviour
     private bool die = false; // Indica si el personaje est� corriendo
     public float distanceInFront = 10.0f;
 
-    private float tiempoTranscurrido = 0.0f;
-    private float tiempoPersecucion = 0.0f;
-
     public PlayerMovement playerMov;
 
     //Cantida de notas recogidas
     public int notesPickedUp = 0;
+
+    //Tomo al enemigo
+    public GameObject enemy;
 
     //Perdiste el juego
     public GameObject blackScreen;
@@ -60,18 +60,17 @@ public class EnemyScript : MonoBehaviour
     {
         if (notesPickedUp == 8)
         {
-
+            enemy.SetActive(false);   
         }
         else if (!isChasing)
         {
-            StartCoroutine(SetEnemyPosition('r'));
+            StartCoroutine(SetEnemyPosition('r')); //Funcion con parametro R, es el tiempo que va a estar esperando para salir
         }
         //El enemigo esta corriendo al personaje.
         else if (!die)
         {
-            
             // Si no hay un GameObject objetivo definido, salir
-            if (targetObject == null) return;
+            if (targetObject == null) return; // a modo de precaución
 
             // calcular la posicion del personaje principal para saber hacia donde ir
             Vector3 direction = targetObject.transform.position - transform.position;
@@ -85,12 +84,12 @@ public class EnemyScript : MonoBehaviour
             //El enemigo rote y nos persiga siempre de frente
             transform.LookAt(targetObject.transform);
 
-            StartCoroutine(SetEnemyPosition('w'));
+            StartCoroutine(SetEnemyPosition('w'));//Funcion con parametro W, es el tiempo que te persigue y aumento de velocidad (es el else)
 
             if (!isRunningSoundPlaying)
             {
                 audioSource.Play();
-                Debug.Log("Reproduciendo sonido de correr");
+                //Debug.Log("Reproduciendo sonido de correr");
                 isRunningSoundPlaying = true;
             }
             else
@@ -98,23 +97,13 @@ public class EnemyScript : MonoBehaviour
                 if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca
                 {
                     audioSource.Stop();
-                    Debug.Log("Deteniendo sonido de correr");
+                    //Debug.Log("Deteniendo sonido de correr");
                     isRunningSoundPlaying = false;
                 }
             }
 
         }
-
-        
-
-        //if (tiempoTranscurrido >= 25f)
-        //{
-        //    isChasing = true;
-        //    tiempoTranscurrido = 0.0f;
-        //    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
-        //}
     }
-
      IEnumerator SetEnemyPosition(char action) {
         switch (notesPickedUp)
         {
@@ -126,7 +115,7 @@ public class EnemyScript : MonoBehaviour
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 } else
                 {
-                    yield return new WaitForSeconds(30.0f);
+                    yield return new WaitForSeconds(40.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 } 
@@ -139,7 +128,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(30.0f);
+                    yield return new WaitForSeconds(40.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -153,7 +142,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(30.0f);
+                    yield return new WaitForSeconds(40.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -167,7 +156,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(30.0f);
+                    yield return new WaitForSeconds(50.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -181,7 +170,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(32.0f);
+                    yield return new WaitForSeconds(50.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -195,7 +184,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(32.0f);
+                    yield return new WaitForSeconds(50.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -209,7 +198,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(32.0f);
+                    yield return new WaitForSeconds(55.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -223,7 +212,7 @@ public class EnemyScript : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(32.0f);
+                    yield return new WaitForSeconds(60.0f);
                     isChasing = false;
                     transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                 }
@@ -233,36 +222,33 @@ public class EnemyScript : MonoBehaviour
                 break;
         }
     }
-
-
-
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player")) //si el objeto que entra en el área es el jugador
         {
-            playerMov.canMove = false;
-            die = true;
-            transform.Translate(Vector3.zero);
-            ani.SetBool("run", false);
-            ani.SetBool("idle", true);
+            playerMov.canMove = false; //Detener el movimiento del jugador
+            die = true; //El enemigo ataca
+            transform.Translate(Vector3.zero); //Detener el movimiento del enemigo
+            ani.SetBool("run", false); //Detener la animación de correr
+            ani.SetBool("idle", true); //Activar la animación de idle
 
             //audio
             if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca
             {
                 audioSource.Stop();
-                Debug.Log("Deteniendo sonido de correr x ataque");
+                //Debug.Log("Deteniendo sonido de correr x ataque");
                 isRunningSoundPlaying = false;
             }
 
-            Vector3 positionInFront = targetObject.transform.position + targetObject.transform.forward * distanceInFront;
-            Debug.Log(positionInFront + " pos");
-            Debug.Log(targetObject.transform.forward + " pos");
-            transform.position = positionInFront;
-            transform.LookAt(targetObject.transform);
-            ani.SetBool("idle", false);
-            ani.SetBool("Attack1", true);
+            Vector3 positionInFront = targetObject.transform.position + targetObject.transform.forward * distanceInFront; //Calcular la posición del enemigo en frente del jugador
+           // Debug.Log(positionInFront + " pos"); 
+           // Debug.Log(targetObject.transform.forward + " pos");
+            transform.position = positionInFront; //Mover al enemigo a la posición calculada
+            transform.LookAt(targetObject.transform); //Rotar al enemigo para que mire al jugador
+            ani.SetBool("idle", false); //Desactivar la animación de idle
+            ani.SetBool("Attack1", true); //Activar la animación de ataque
             // Mostrar pantalla negra y texto de "Perdiste"
-            StartCoroutine(ShowGameOverScreen());
+            StartCoroutine(ShowGameOverScreen()); //llamamos a la función que muestra la pantalla de "Perdiste"
         }
         IEnumerator ShowGameOverScreen()
         {

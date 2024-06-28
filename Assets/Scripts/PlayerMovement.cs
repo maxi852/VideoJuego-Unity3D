@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking = false; // Indica si el personaje está caminando
     private bool isJumping = false; // Indica si el personaje está saltando
     private bool isOnGround = false; // Indica si el personaje está en el suelo
-    private bool isFallen = false; // Indica si el personaje ha caído
+    //private bool isFallen = false; // Indica si el personaje ha caído
     public Rigidbody rb; // Componente Rigidbody del personaje
     private Animator animator; // Componente Animator del personaje
     private AudioSource audioSource; // Componente AudioSource del personaje
@@ -18,12 +18,14 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip runSound; // Sonido de correr
     public AudioClip jumpSound; // Sonido de salto
 
-    public float jumpForce = 100.0f; // Fuerza del salto
+    public float jumpForce = 600.0f; // Fuerza del salto
     public Transform groundCheck; // Punto de chequeo para detectar si el personaje está en el suelo
     public LayerMask groundMask; // Capa de suelo
 
     public bool canMove = true;
 
+    public GameObject Win;
+    public GameObject BlackScreen;
     private void Start()
     {
         Cursor.visible = false;
@@ -31,6 +33,13 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
+        jumpForce = 20f;
+
+        if (Win != null)
+        {
+            Win.SetActive(false);
+            BlackScreen.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
@@ -40,13 +49,11 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("VelX", horizontalInput);
         animator.SetFloat("VelY", verticalInput);
-        Debug.Log("canMove" + canMove);
         isOnGround = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask); // Verificar si el personaje está en el suelo
 
-        if (canMove)
+        if (canMove) //animaciones
         {
-            Debug.Log("la wataa");
-            // Detectar si el jugador está corriendo
+            // Detectar si el jugador está corriendo sea en A S W D
             if (Input.GetKey(KeyCode.LeftShift) && (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0))
             {
                 isRunning = true;
@@ -56,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
                 isRunning = false;
             }
 
-
+            // Detectar si el jugador está caminando sea en A S W D
             if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0)
             {
                 isWalking = !isRunning;
@@ -69,9 +76,8 @@ public class PlayerMovement : MonoBehaviour
             if (isOnGround && Input.GetKeyDown(KeyCode.Space)) // Verificar si el personaje está en el suelo y se presionó la barra espaciadora
             {
                 isJumping = true;
-                rb.AddForce(Vector3.up * jumpForce); // Aplicar una fuerza hacia arriba para el salto
+                rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z); // Ajustar la velocidad vertical para el salto
                 animator.Play("Jump");
-
             }
         }
 
@@ -110,14 +116,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (audioSource.clip != jumpSound)
                 {
-                    Debug.Log("if");
                     audioSource.clip = jumpSound; // Configurar el sonido de salto
                     audioSource.Play(); // Reproducir el sonido de salto
                     isJumping = false;
                 }
                 else if (!audioSource.isPlaying)
                 {
-                    Debug.Log("elseif");
                     audioSource.Play();
                     isJumping = false;
                 }
@@ -139,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (canMove)
+        if (canMove) //Script que hace que el pj se mueva
         {
             Vector3 moveDirection = (verticalInput * Camera.main.transform.forward + horizontalInput * Camera.main.transform.right).normalized; //Para calcular direccion de movimiento del jugador
             float currentSpeed = isRunning ? speed * runSpeedMultiplier : speed; //Determina velocidad actual del jugador
@@ -154,6 +158,15 @@ public class PlayerMovement : MonoBehaviour
         //}
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("SpotyGirl"))
+        {
+            Win.SetActive(true);
+            BlackScreen.SetActive(true);
+            canMove = false;
+        }
+    }
     //void OnCollisionEnter(Collision other)
     //{
     //    if (other.gameObject.CompareTag("Obstacle1"))
