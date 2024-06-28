@@ -20,9 +20,13 @@ public class EnemyScript : MonoBehaviour
     private bool die = false; // Indica si el personaje est� corriendo
     public float distanceInFront = 10.0f;
 
-    public float tiempoTranscurrido = 0.0f;
+    private float tiempoTranscurrido = 0.0f;
+    private float tiempoPersecucion = 0.0f;
 
     public PlayerMovement playerMov;
+
+    //Cantida de notas recogidas
+    public int notesPickedUp = 0;
 
     //Perdiste el juego
     public GameObject blackScreen;
@@ -46,17 +50,26 @@ public class EnemyScript : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = enemyRun;
         audioSource.loop = true;
+
+        //Velocidad inicial del enemigo
+        speed = 15f;
+        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
     }
 
     void Update()
     {
-        if (!isChasing)
+        if (notesPickedUp == 8)
         {
-            tiempoTranscurrido += Time.deltaTime;
+
+        }
+        else if (!isChasing)
+        {
+            StartCoroutine(SetEnemyPosition('r'));
         }
         //El enemigo esta corriendo al personaje.
         else if (!die)
         {
+            
             // Si no hay un GameObject objetivo definido, salir
             if (targetObject == null) return;
 
@@ -71,6 +84,8 @@ public class EnemyScript : MonoBehaviour
 
             //El enemigo rote y nos persiga siempre de frente
             transform.LookAt(targetObject.transform);
+
+            StartCoroutine(SetEnemyPosition('w'));
 
             if (!isRunningSoundPlaying)
             {
@@ -90,27 +105,136 @@ public class EnemyScript : MonoBehaviour
 
         }
 
-        if (tiempoTranscurrido >= 1.0f)
-        {
-            isChasing = true;
-            tiempoTranscurrido = 0.0f;
-            float randomX;
-            float randomZ = UnityEngine.Random.Range(12.0f, 560.0f);
-            Debug.Log(randomZ);
-            if (randomZ < 226.0f)
-            {
-                randomX = UnityEngine.Random.Range(-73.0f, 162.0f);
-            }
-            else
-            {
-                randomX = UnityEngine.Random.Range(-73.0f, 300.0f);
-            }
-            float randomY = 0.0f;
+        
 
-            //transform.position = new Vector3(40.0f, 0.0f, -3.0f);
-            //transform.position = new Vector3(randomX, randomY, randomZ);  
+        //if (tiempoTranscurrido >= 25f)
+        //{
+        //    isChasing = true;
+        //    tiempoTranscurrido = 0.0f;
+        //    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+        //}
+    }
+
+     IEnumerator SetEnemyPosition(char action) {
+        switch (notesPickedUp)
+        {
+            case 0:
+                if(action == 'r')
+                {
+                    yield return new WaitForSeconds(15.0f);
+                    isChasing = true;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                } else
+                {
+                    yield return new WaitForSeconds(30.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                } 
+                break;
+            case 1:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(13.0f);
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(30.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 2:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(12.0f);
+                    speed = 16f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(30.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 3:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(12.0f);
+                    speed = 16f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(30.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 4:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(12.0f);
+                    speed = 17f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(32.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 5:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(12.0f);
+                    speed = 17f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(32.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 6:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(12.0f);
+                    speed = 18f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(32.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            case 7:
+                if (action == 'r')
+                {
+                    yield return new WaitForSeconds(10.0f);
+                    speed = 19f;
+                    isChasing = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(32.0f);
+                    isChasing = false;
+                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                }
+                break;
+            default:
+                transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                break;
         }
     }
+
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -121,17 +245,6 @@ public class EnemyScript : MonoBehaviour
             transform.Translate(Vector3.zero);
             ani.SetBool("run", false);
             ani.SetBool("idle", true);
-
-            //targetObject.transform.LookAt(gameObject.transform);
-
-            //mainCamera.transform.LookAt(transform);
-
-            //Vector3 direction = (transform.position - mainCamera.transform.position).normalized;
-            //Quaternion lookRotation = Quaternion.LookRotation(direction);
-            //mainCamera.transform.rotation = lookRotation;
-
-            //Mandar al personaje posicion donde no hay nada
-            //targetObject.transform.position = new Vector3(4f, 2f, -214f);
 
             //audio
             if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca

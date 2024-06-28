@@ -14,6 +14,9 @@ public class NotePickup : MonoBehaviour
     private string completeWord;
     public Text claveTexto;
     private GameObject go;
+    
+    public EnemyScript enemyScript;
+
     // Update is called once per frame
     public GameObject fogObject; // Referencia al objeto de la niebla
     public GameObject exitObject; // Referencia al objeto de Exit
@@ -119,6 +122,7 @@ public class NotePickup : MonoBehaviour
         }
         Debug.Log(completeWord);
         claveTexto.text = completeWord;
+        enemyScript.notesPickedUp++; 
          // Verifica si todas las letras han sido recogidas
         if (completeWord.IndexOf('_') == -1) // Si no hay guiones bajos, la palabra está completa
         {
