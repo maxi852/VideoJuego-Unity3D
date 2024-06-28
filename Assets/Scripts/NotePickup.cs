@@ -15,7 +15,9 @@ public class NotePickup : MonoBehaviour
     public Text claveTexto;
     private GameObject go;
     // Update is called once per frame
-void Start()
+    public GameObject fogObject; // Referencia al objeto de la niebla
+    public GameObject exitObject; // Referencia al objeto de Exit
+    void Start()
     {
         go = GetComponent<GameObject>();
         word[0] = '_';
@@ -117,5 +119,18 @@ void Start()
         }
         Debug.Log(completeWord);
         claveTexto.text = completeWord;
+         // Verifica si todas las letras han sido recogidas
+        if (completeWord.IndexOf('_') == -1) // Si no hay guiones bajos, la palabra está completa
+        {
+            // Desactiva los objetos de la niebla y Exit
+            if (fogObject != null)
+            {
+                fogObject.SetActive(false);
+            }
+            if (exitObject != null)
+            {
+                exitObject.SetActive(false);
+            }
+        }
     }
 }
