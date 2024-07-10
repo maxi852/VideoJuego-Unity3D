@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip jumpSound; // Sonido de salto
 
     public float jumpForce = 600.0f; // Fuerza del salto
+     public float fallSpeed = 100.0f; // Velocidad de caída
     public Transform groundCheck; // Punto de chequeo para detectar si el personaje está en el suelo
     public LayerMask groundMask; // Capa de suelo
 
@@ -150,6 +151,10 @@ public class PlayerMovement : MonoBehaviour
             rb.transform.Translate(moveDirection * currentSpeed * Time.fixedDeltaTime, Space.World); //Mueve al jugador a la direccion calculada con la velocidad calculada
         }
 
+        if (rb.velocity.y < 0)
+        {
+            rb.AddForce(Vector3.down * fallSpeed, ForceMode.Acceleration);
+        }
         //if (Input.GetKeyDown(KeyCode.G) && isFallen)
         //{
         //    transform.rotation = Quaternion.identity;
