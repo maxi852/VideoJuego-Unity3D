@@ -130,13 +130,11 @@ public class EnemyScript : MonoBehaviour
                         audioSource.Stop();
                         isRunningSoundPlaying = false;
                     }
-                    yield return new WaitForSeconds(1.0f);
-                    Debug.Log("aloha?");
+                    yield return new WaitForSeconds(15.0f);
                     
                     if (!isChasing)
                     {
-                        //transform.position = new Vector3(230.0f, 0.0f, 200.0f);
-                        transform.position = new Vector3(-12.83f, 0.0f, 30.14f);
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
                 } else
@@ -155,7 +153,11 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(13.0f);
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -174,7 +176,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(12.0f);
                     speed = 16f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -193,7 +199,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(12.0f);
                     speed = 16f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -212,7 +222,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(12.0f);
                     speed = 17f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -231,7 +245,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(12.0f);
                     speed = 17f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -250,7 +268,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(12.0f);
                     speed = 18f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -269,7 +291,11 @@ public class EnemyScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(10.0f);
                     speed = 19f;
-                    isChasing = true;
+                    if (!isChasing)
+                    {
+                        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        isChasing = true;
+                    }
                 }
                 else
                 {
@@ -316,16 +342,8 @@ public class EnemyScript : MonoBehaviour
 
             deathPanel.SetActive(true);
             // Mostrar pantalla negra y texto de "Perdiste"
-            //StartCoroutine(ShowGameOverScreen()); //llamamos a la función que muestra la pantalla de "Perdiste"
+            
         }
-        IEnumerator ShowGameOverScreen()
-        {
-            // Esperar un poco antes de mostrar la pantalla de "Perdiste" para permitir que se reproduzca la animación de ataque
-            yield return new WaitForSeconds(2.0f);
 
-            // Activar la pantalla negra y el texto de "Perdiste"
-            blackScreen.SetActive(true);
-            gameOverText.SetActive(true);
-        }
     }
 }

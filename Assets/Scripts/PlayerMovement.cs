@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip walkSound; // Sonido de caminar
     public AudioClip runSound; // Sonido de correr
     public AudioClip jumpSound; // Sonido de salto
+    public AudioClip dieSound; // Sonido de muerte
 
     public float jumpForce = 600.0f; // Fuerza del salto
      public float fallSpeed = 100.0f; // Velocidad de caída
@@ -172,12 +173,14 @@ public class PlayerMovement : MonoBehaviour
             canMove = false;
         }
     }
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    if (other.gameObject.CompareTag("Obstacle1"))
-    //    {
-    //        rb.constraints = RigidbodyConstraints.None;
-    //        isFallen = true;
-    //    }
-    //}
-}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy")) //si el objeto que entra en el área es el jugador
+        {
+            Debug.Log("d");
+            audioSource.clip = dieSound; // Configurar el sonido de salto
+            audioSource.Play(); // Reproducir el sonido de salto
+        }
+    }
+    }
