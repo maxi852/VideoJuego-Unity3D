@@ -37,6 +37,12 @@ public class EnemyScript : MonoBehaviour
     public AudioClip enemyRun;
     private bool isRunningSoundPlaying = false;
 
+    private float distancePlayer; // Distancia con el player
+
+    public GameObject deathPanel;
+
+    public CameraMovement cameraMov;
+
     void Start()
     {
         ani = GetComponent<Animator>();
@@ -53,7 +59,11 @@ public class EnemyScript : MonoBehaviour
 
         //Velocidad inicial del enemigo
         speed = 15f;
-        transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+        //transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+        transform.position = new Vector3(-12.83f,-100.0f, 30.14f);
+
+        deathPanel.SetActive(false);
+
     }
 
     void Update()
@@ -69,6 +79,7 @@ public class EnemyScript : MonoBehaviour
         //El enemigo esta corriendo al personaje.
         else if (!die)
         {
+            Debug.Log("chasing");
             // Si no hay un GameObject objetivo definido, salir
             if (targetObject == null) return; // a modo de precaución
 
@@ -86,22 +97,26 @@ public class EnemyScript : MonoBehaviour
 
             StartCoroutine(SetEnemyPosition('w'));//Funcion con parametro W, es el tiempo que te persigue y aumento de velocidad (es el else)
 
-            if (!isRunningSoundPlaying)
+            distancePlayer = Vector3.Distance(transform.position, targetObject.transform.position);
+
+            if (distancePlayer < 150)
             {
-                audioSource.Play();
-                //Debug.Log("Reproduciendo sonido de correr");
-                isRunningSoundPlaying = true;
+                Debug.Log("Cerca");
+                if (!isRunningSoundPlaying)
+                {
+                    Debug.Log("H");
+                    audioSource.Play();
+                    isRunningSoundPlaying = true;
+                }
             }
             else
             {
-                if (isRunningSoundPlaying) //Detener el sonido cuando el enemigo ataca
+                if (isRunningSoundPlaying)
                 {
                     audioSource.Stop();
-                    //Debug.Log("Deteniendo sonido de correr");
                     isRunningSoundPlaying = false;
                 }
             }
-
         }
     }
      IEnumerator SetEnemyPosition(char action) {
@@ -110,9 +125,20 @@ public class EnemyScript : MonoBehaviour
             case 0:
                 if(action == 'r')
                 {
-                    yield return new WaitForSeconds(15.0f);
-                    isChasing = true;
-                    transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
+                    yield return new WaitForSeconds(1.0f);
+                    Debug.Log("aloha?");
+                    
+                    if (!isChasing)
+                    {
+                        //transform.position = new Vector3(230.0f, 0.0f, 200.0f);
+                        transform.position = new Vector3(-12.83f, 0.0f, 30.14f);
+                        isChasing = true;
+                    }
                 } else
                 {
                     yield return new WaitForSeconds(40.0f);
@@ -123,6 +149,11 @@ public class EnemyScript : MonoBehaviour
             case 1:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(13.0f);
                     isChasing = true;
                 }
@@ -136,6 +167,11 @@ public class EnemyScript : MonoBehaviour
             case 2:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(12.0f);
                     speed = 16f;
                     isChasing = true;
@@ -150,6 +186,11 @@ public class EnemyScript : MonoBehaviour
             case 3:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(12.0f);
                     speed = 16f;
                     isChasing = true;
@@ -164,6 +205,11 @@ public class EnemyScript : MonoBehaviour
             case 4:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(12.0f);
                     speed = 17f;
                     isChasing = true;
@@ -178,6 +224,11 @@ public class EnemyScript : MonoBehaviour
             case 5:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(12.0f);
                     speed = 17f;
                     isChasing = true;
@@ -192,6 +243,11 @@ public class EnemyScript : MonoBehaviour
             case 6:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(12.0f);
                     speed = 18f;
                     isChasing = true;
@@ -206,6 +262,11 @@ public class EnemyScript : MonoBehaviour
             case 7:
                 if (action == 'r')
                 {
+                    if (isRunningSoundPlaying)
+                    {
+                        audioSource.Stop();
+                        isRunningSoundPlaying = false;
+                    }
                     yield return new WaitForSeconds(10.0f);
                     speed = 19f;
                     isChasing = true;
@@ -240,15 +301,22 @@ public class EnemyScript : MonoBehaviour
                 isRunningSoundPlaying = false;
             }
 
+           
+
             Vector3 positionInFront = targetObject.transform.position + targetObject.transform.forward * distanceInFront; //Calcular la posición del enemigo en frente del jugador
            // Debug.Log(positionInFront + " pos"); 
            // Debug.Log(targetObject.transform.forward + " pos");
+
             transform.position = positionInFront; //Mover al enemigo a la posición calculada
             transform.LookAt(targetObject.transform); //Rotar al enemigo para que mire al jugador
+
+
             ani.SetBool("idle", false); //Desactivar la animación de idle
             ani.SetBool("Attack1", true); //Activar la animación de ataque
+
+            deathPanel.SetActive(true);
             // Mostrar pantalla negra y texto de "Perdiste"
-            StartCoroutine(ShowGameOverScreen()); //llamamos a la función que muestra la pantalla de "Perdiste"
+            //StartCoroutine(ShowGameOverScreen()); //llamamos a la función que muestra la pantalla de "Perdiste"
         }
         IEnumerator ShowGameOverScreen()
         {

@@ -12,27 +12,27 @@ public class CameraMovement : MonoBehaviour
     private float RotationHor = 0.0f; // Rotación horizontal de la cámara
     private float RotationVer = 0.0f; // Rotación vertical de la cámara
 
-    
-
+  
+    public Vector3 thirdPersonOffset = new Vector3(0, 2, -5); // Ajusta estos valores según lo necesites
     private void LateUpdate()
     {
-        if (!target)
-            return;
+                if (!target)
+                    return;
 
-        // Rotamos la cámara horizontalmente según el movimiento del mouse en X
-        RotationHor += rotationSpeed * Input.GetAxis("Mouse X");
+                // Rotamos la cámara horizontalmente según el movimiento del mouse en X
+                RotationHor += rotationSpeed * Input.GetAxis("Mouse X");
 
-        // Limitamos la rotación vertical de la cámara entre -verticalRotationLimit y verticalRotationLimit
-        RotationVer -= rotationSpeed * Input.GetAxis("Mouse Y");
-        RotationVer = Mathf.Clamp(RotationVer, -verticalRotationLimit, verticalRotationLimit);
+                // Limitamos la rotación vertical de la cámara entre -verticalRotationLimit y verticalRotationLimit
+                RotationVer -= rotationSpeed * Input.GetAxis("Mouse Y");
+                RotationVer = Mathf.Clamp(RotationVer, -verticalRotationLimit, verticalRotationLimit);
 
-        // Aplicamos la rotación a la cámara
-        transform.rotation = Quaternion.Euler(RotationVer, RotationHor, 0.0f);
+                // Aplicamos la rotación a la cámara
+                transform.rotation = Quaternion.Euler(RotationVer, RotationHor, 0.0f);
 
-        // Calculamos la posición de la cámara
-        Vector3 desiredPosition = target.position + offset;
+                // Calculamos la posición de la cámara
+                Vector3 desiredPosition = target.position + offset;
 
-        // Movemos la cámara hacia la posición calculada
-        transform.position = desiredPosition;
+                // Movemos la cámara hacia la posición calculada
+                transform.position = desiredPosition;
     }
 }
