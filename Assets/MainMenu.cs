@@ -9,7 +9,10 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene"); //Cargo la escena SampleScene que es donde tengo el juego
     }
-
+    public void EscenaOpciones()
+    {
+        SceneManager.LoadScene("Options"); // Cargo la escena de options
+    }
     public void Salir()
     {
         Application.Quit(); //Salir del juego
