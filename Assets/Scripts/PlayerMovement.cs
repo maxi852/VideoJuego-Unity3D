@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -28,9 +29,11 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject Win;
     public GameObject BlackScreen;
+
+    public GameObject winPanel;
     private void Start()
     {
-        Cursor.visible = false;
+        UnityEngine.Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -168,8 +171,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("SpotyGirl"))
         {
-            Win.SetActive(true);
-            BlackScreen.SetActive(true);
+            Debug.Log("a");
+            //Win.SetActive(true);
+            //BlackScreen.SetActive(true);
+            winPanel.SetActive(true);
             canMove = false;
         }
     }

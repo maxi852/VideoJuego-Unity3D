@@ -58,7 +58,7 @@ public class EnemyScript : MonoBehaviour
         audioSource.loop = true;
 
         //Velocidad inicial del enemigo
-        speed = 15f;
+        speed = 12f;
         //transform.position = new Vector3(230.0f, 0.0f, 200.0f);
         transform.position = new Vector3(-12.83f,-100.0f, 30.14f);
 
@@ -175,9 +175,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(12.0f);
-                    speed = 16f;
+                    
                     if (!isChasing)
                     {
+                        speed = 14f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
@@ -198,9 +199,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(12.0f);
-                    speed = 16f;
+                    
                     if (!isChasing)
                     {
+                        speed = 14f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
@@ -221,9 +223,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(12.0f);
-                    speed = 17f;
+                    
                     if (!isChasing)
                     {
+                        speed = 15f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
@@ -244,9 +247,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(12.0f);
-                    speed = 17f;
+                    
                     if (!isChasing)
                     {
+                        speed = 16f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
@@ -267,9 +271,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(12.0f);
-                    speed = 18f;
+                    
                     if (!isChasing)
                     {
+                        speed = 16f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
@@ -290,9 +295,10 @@ public class EnemyScript : MonoBehaviour
                         isRunningSoundPlaying = false;
                     }
                     yield return new WaitForSeconds(10.0f);
-                    speed = 19f;
+                    
                     if (!isChasing)
                     {
+                        speed = 17f;
                         transform.position = new Vector3(230.0f, 0.0f, 200.0f);
                         isChasing = true;
                     }
